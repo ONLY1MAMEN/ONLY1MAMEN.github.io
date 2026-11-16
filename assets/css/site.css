@@ -99,6 +99,9 @@ h1, h2, p { margin: 0; }
 }
 .topline__side { flex: 1; min-width: 0; }
 .topline__side--right { text-align: right; }
+/* Координаты: на телефоне широта и долгота стоят в две строки, на компьютере — в одну. */
+.topline__part { display: block; white-space: nowrap; }
+.topline__part + .topline__part { margin-top: 5px; }
 
 /* ---------- Главный экран ---------- */
 .home { position: relative; display: flex; flex-direction: column; }
@@ -431,6 +434,8 @@ h1, h2, p { margin: 0; }
   :root { --u: clamp(1.15px, calc(42vw / 390), 1.55px); }
   .page { max-width: 1200px; }
   .topline { padding-left: 40px; padding-right: 40px; }
+  .topline__part { display: inline; }
+  .topline__part + .topline__part { margin-top: 0; margin-left: 2em; }
   .home {
     flex: 1;
     flex-direction: row;

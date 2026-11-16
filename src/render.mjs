@@ -104,7 +104,7 @@ function topline(data) {
   return `<div class="topline">
 <span class="topline__side">${esc(left)}</span>
 ${d.cross ? CROSS : '<span></span>'}
-<span class="topline__side topline__side--right">${esc(right)}</span>
+<span class="topline__side topline__side--right">${right.split(/\s{2,}|\u3000/).filter(Boolean).map((part) => `<span class="topline__part">${esc(part)}</span>`).join('')}</span>
 </div>`;
 }
 
