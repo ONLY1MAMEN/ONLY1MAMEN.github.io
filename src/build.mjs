@@ -39,5 +39,5 @@ await writeFile(path.join(root, '404.html'), renderNotFound(data));
 out.push('+ 404.html');
 await writeFile(path.join(root, 'ping.txt'), 'ok\n');
 await writeFile(path.join(root, '.nojekyll'), '');
-await writeFile(path.join(root, 'robots.txt'), 'User-agent: *\nAllow: /\n');
+await writeFile(path.join(root, 'robots.txt'), 'User-agent: *\nAllow: /\nDisallow: /admin/\n');
 console.log(out.join('\n'));

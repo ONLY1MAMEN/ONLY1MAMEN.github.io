@@ -9,6 +9,19 @@ import { zonedToUtcMs, formatDay } from './tz.mjs';
 let assetVersion = '';
 export function setAssetVersion(v) { assetVersion = v ? `?v=${String(v).replace(/[^A-Za-z0-9]/g, '')}` : ''; }
 
+// Предусмотренные цвета оформления: фон страницы. Сами цвета заданы в site.css, здесь — названия для админки
+// и цвет верхней полосы браузера.
+export const THEMES = {
+  grey: { name: 'Серый (основной)', bg: '#e7e7e6' },
+  light: { name: 'Светло-серый', bg: '#efefee' },
+  white: { name: 'Почти белый', bg: '#f6f6f5' },
+  warm: { name: 'Тёплый', bg: '#e9e7e3' },
+  sand: { name: 'Песочный', bg: '#e6e2da' },
+  cool: { name: 'Холодный', bg: '#e3e6e8' },
+  stone: { name: 'Камень', bg: '#dcdcda' },
+};
+const themeOf = (site) => (Object.hasOwn(THEMES, site.theme) ? site.theme : 'grey');
+
 const ESC = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
 export const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ESC[c]);
 
@@ -51,19 +64,32 @@ function visibleLinks(list) {
     .filter((x) => x.href && String(x.title ?? '').trim());
 }
 
-function pictureHtml(photo, base, cls, sizes, eager) {
-  if (!photo) return '';
+// Файлы фотографии: набор ширин в формате webp (с запасным jpg) либо целиком в jpg
+// (так сохраняет фото админка на устройствах, которые не умеют делать webp).
+function photoSet(photo, base) {
+  if (!photo) return null;
   const b = assetPath(photo.base);
   const widths = (photo.widths || []).filter((w) => Number.isInteger(w));
   const fallback = assetPath(photo.fallback);
-  if (!b || !widths.length) {
-    return fallback ? `<img draggable="false" class="${cls}" src="${base}${esc(fallback)}" alt="${esc(photo.alt)}">` : '';
-  }
-  const srcset = widths.map((w) => `${base}${b}-${w}.webp ${w}w`).join(', ');
-  const src = fallback ? `${base}${fallback}` : `${base}${b}-${widths[0]}.webp`;
+  if (!b || !widths.length) return fallback ? { src: `${base}${fallback}` } : null;
+  const ext = photo.format === 'jpg' ? 'jpg' : 'webp';
+  return {
+    ext,
+    srcset: widths.map((w) => `${base}${b}-${w}.${ext} ${w}w`).join(', '),
+    src: fallback ? `${base}${fallback}` : `${base}${b}-${widths[0]}.${ext}`,
+  };
+}
+
+function pictureHtml(photo, base, cls, sizes, eager) {
+  const set = photoSet(photo, base);
+  if (!set) return '';
+  if (!set.srcset) return `<img draggable="false" class="${cls}" src="${esc(set.src)}" alt="${esc(photo.alt)}">`;
   const dims = photo.width && photo.height ? ` width="${+photo.width}" height="${+photo.height}"` : '';
   const load = eager ? ' fetchpriority="high" decoding="async"' : ' loading="lazy" decoding="async"';
-  return `<picture><source type="image/webp" srcset="${esc(srcset)}" sizes="${esc(sizes)}"><img draggable="false" class="${cls}" src="${esc(src)}" alt="${esc(photo.alt)}"${dims}${load}></picture>`;
+  if (set.ext === 'jpg') {
+    return `<img draggable="false" class="${cls}" srcset="${esc(set.srcset)}" sizes="${esc(sizes)}" src="${esc(set.src)}" alt="${esc(photo.alt)}"${dims}${load}>`;
+  }
+  return `<picture><source type="image/webp" srcset="${esc(set.srcset)}" sizes="${esc(sizes)}"><img draggable="false" class="${cls}" src="${esc(set.src)}" alt="${esc(photo.alt)}"${dims}${load}></picture>`;
 }
 
 function head(data, base, { title, description, path, preloadHero }) {
@@ -72,7 +98,7 @@ function head(data, base, { title, description, path, preloadHero }) {
   const canonical = siteUrl ? siteUrl + path : '';
   const og = siteUrl ? siteUrl + 'assets/img/og.jpg' : '';
   return `<!doctype html>
-<html lang="${esc(site.lang || 'ru')}" data-theme="${esc(site.theme || 'grey')}">
+<html lang="${esc(site.lang || 'ru')}" data-theme="${themeOf(site)}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -80,7 +106,7 @@ function head(data, base, { title, description, path, preloadHero }) {
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
-<meta name="theme-color" content="#e7e7e6">
+<meta name="theme-color" content="${THEMES[themeOf(site)].bg}">
 ${canonical ? `<link rel="canonical" href="${esc(canonical)}">` : ''}
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="${esc(site.title || '')}">
@@ -197,9 +223,9 @@ export function renderHome(data, { base = '', nowMs = Date.now(), index = '' } =
   const listen = visibleLinks(data.listen);
   const follow = visibleLinks(data.follow);
   const photo = home.photo;
-  const pb = photo && assetPath(photo.base);
-  const preloadHero = pb && (photo.widths || []).length
-    ? `<link rel="preload" as="image" type="image/webp" imagesrcset="${esc(photo.widths.map((w) => `${base}${pb}-${w}.webp ${w}w`).join(', '))}" imagesizes="(min-width: 900px) 700px, (min-width: 460px) 530px, 115vw">\n`
+  const heroSet = photoSet(photo, base);
+  const preloadHero = heroSet && heroSet.srcset
+    ? `<link rel="preload" as="image" type="image/${heroSet.ext === 'jpg' ? 'jpeg' : 'webp'}" imagesrcset="${esc(heroSet.srcset)}" imagesizes="(min-width: 900px) 700px, (min-width: 460px) 530px, 115vw">\n`
     : '';
 
   const btn = (x, extra = '') => `<a class="btn${extra}" href="${esc(x.href)}"${extAttrs(x.href)}>${iconHtml(x, base)}<span class="btn__text">${esc(x.title)}</span>${ARROW}</a>`;

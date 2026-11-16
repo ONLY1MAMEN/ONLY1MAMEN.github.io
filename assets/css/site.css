@@ -39,6 +39,10 @@
 }
 :root[data-theme="light"] { --bg: #efefee; --line: #d2d2cf; }
 :root[data-theme="warm"] { --bg: #e9e7e3; --line: #cbc8c2; }
+:root[data-theme="white"] { --bg: #f6f6f5; --line: #d8d8d5; }
+:root[data-theme="sand"] { --bg: #e6e2da; --line: #c9c4b9; }
+:root[data-theme="cool"] { --bg: #e3e6e8; --line: #c4c9cc; }
+:root[data-theme="stone"] { --bg: #dcdcda; --line: #bdbdba; }
 
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
