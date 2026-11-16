@@ -30,6 +30,7 @@ function assetPath(p) {
 }
 
 const ARROW = '<svg class="arrow" aria-hidden="true" width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M2 9 9 2M3.5 2H9v5.5"/></svg>';
+const CHEVRON = '<svg class="chev" aria-hidden="true" width="11" height="7" viewBox="0 0 11 7" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M1 1l4.5 4.5L10 1"/></svg>';
 const CROSS = '<svg class="topline__cross" aria-hidden="true" width="10" height="18" viewBox="0 0 10 18" fill="none" stroke="currentColor" stroke-width="1"><path d="M5 0v18M1 5h8"/></svg>';
 const SPECKS = '<svg class="specks" aria-hidden="true" viewBox="0 0 390 1000" preserveAspectRatio="none" fill="none" stroke="currentColor" stroke-width="0.6" stroke-linecap="round"><path d="M3 96v14M5 101v5M2 118h4M6 240v9M3 246v3M384 92v11M387 99v4M385 268v7M2 520v6M5 523v2M387 610v10M384 615v3M4 880v8M386 940v6M70 3h9M74 5h3M300 2h12M306 5h4M120 996h8M260 997h6"/></svg>';
 
@@ -39,7 +40,7 @@ function extAttrs(url) {
 
 function iconHtml(item, base, cls = 'btn__icon') {
   const p = assetPath(item.icon);
-  if (p) return `<img class="${cls}" src="${base}${esc(p)}" alt="" width="24" height="24" decoding="async">`;
+  if (p) return `<img draggable="false" class="${cls}" src="${base}${esc(p)}" alt="" width="24" height="24" decoding="async">`;
   const mono = String(item.title ?? '').trim().slice(0, 2).toUpperCase();
   return `<span class="${cls} ${cls}--mono" aria-hidden="true">${esc(mono)}</span>`;
 }
@@ -57,13 +58,13 @@ function pictureHtml(photo, base, cls, sizes, eager) {
   const widths = (photo.widths || []).filter((w) => Number.isInteger(w));
   const fallback = assetPath(photo.fallback);
   if (!b || !widths.length) {
-    return fallback ? `<img class="${cls}" src="${base}${esc(fallback)}" alt="${esc(photo.alt)}">` : '';
+    return fallback ? `<img draggable="false" class="${cls}" src="${base}${esc(fallback)}" alt="${esc(photo.alt)}">` : '';
   }
   const srcset = widths.map((w) => `${base}${b}-${w}.webp ${w}w`).join(', ');
   const src = fallback ? `${base}${fallback}` : `${base}${b}-${widths[0]}.webp`;
   const dims = photo.width && photo.height ? ` width="${+photo.width}" height="${+photo.height}"` : '';
   const load = eager ? ' fetchpriority="high" decoding="async"' : ' loading="lazy" decoding="async"';
-  return `<picture><source type="image/webp" srcset="${esc(srcset)}" sizes="${esc(sizes)}"><img class="${cls}" src="${esc(src)}" alt="${esc(photo.alt)}"${dims}${load}></picture>`;
+  return `<picture><source type="image/webp" srcset="${esc(srcset)}" sizes="${esc(sizes)}"><img draggable="false" class="${cls}" src="${esc(src)}" alt="${esc(photo.alt)}"${dims}${load}></picture>`;
 }
 
 function head(data, base, { title, description, path, preloadHero }) {
@@ -151,7 +152,7 @@ function releaseHtml(data, base, nowMs) {
 
   const cover = assetPath(r.cover);
   const coverHtml = cover
-    ? `<img class="release__cover" src="${base}${esc(cover)}" alt="Обложка: ${esc(title)}" width="152" height="152" loading="lazy" decoding="async">`
+    ? `<img draggable="false" class="release__cover" src="${base}${esc(cover)}" alt="Обложка: ${esc(title)}" width="152" height="152" loading="lazy" decoding="async">`
     : '<span class="release__cover release__cover--empty" aria-hidden="true">Обложка<br>релиза</span>';
 
   const vk = safeUrl(r.presaveVk);
@@ -165,6 +166,8 @@ function releaseHtml(data, base, nowMs) {
   ].filter(Boolean);
 
   const kickerSoon = [r.kickerSoon || 'Скоро', day].filter(Boolean).join(' · ');
+  // Надпись над названием вышедшего релиза. Пустая — строки нет (заголовок блока уже говорит «Latest release»).
+  const kickerOut = String(r.kickerOut ?? '').trim();
   const attrs = auto
     ? ` data-mode="auto" data-at="${new Date(atMs).toISOString()}" data-ping="${base}ping.txt"`
     : ` data-mode="${initial}"`;
@@ -174,7 +177,7 @@ function releaseHtml(data, base, nowMs) {
 <div class="release__card">
 ${coverHtml}
 <div class="release__meta">
-<p class="kicker"><span data-state="soon">${esc(kickerSoon)}</span><span data-state="out">${esc(r.kickerOut || 'Новый релиз')}</span></p>
+${kickerOut ? `<p class="kicker"><span data-state="soon">${esc(kickerSoon)}</span><span data-state="out">${esc(kickerOut)}</span></p>` : `<p class="kicker" data-state="soon">${esc(kickerSoon)}</p>`}
 <p class="release__title">${esc(title)}</p>
 <p class="kicker">${esc(r.artist || '')}</p>
 </div>
@@ -203,6 +206,18 @@ export function renderHome(data, { base = '', nowMs = Date.now(), index = '' } =
   const btn = (x, extra = '') => `<a class="btn${extra}" href="${esc(x.href)}"${extAttrs(x.href)}>${iconHtml(x, base)}<span class="btn__text">${esc(x.title)}</span>${ARROW}</a>`;
   const logo = String(home.logoText ?? '').trim() || site.title || '';
 
+  // LISTEN: «rows» — все площадки строками; «scroll» — видны первые строки, остальные листаются внутри блока.
+  const listenRows = Math.min(Math.max(parseInt(home.listenRows, 10) || 3, 1), 6);
+  const listenGrid = `<div class="links links--listen">${listen.map((x) => btn(x)).join('')}</div>`;
+  const listenScroll = home.listenLayout === 'scroll' && listen.length > listenRows * 2;
+  const listenHtml = listenScroll
+    ? `<div class="scroller rows-${listenRows}" data-scroller>
+<div class="scroller__view" data-scroller-view tabindex="0" role="group" aria-label="${esc(home.listenLabel || 'Listen')}">${listenGrid}</div>
+<button class="scroller__more" type="button" data-scroller-more hidden><span data-more="down">${esc(home.listenMoreText || 'Ещё площадки')}</span><span data-more="up">${esc(home.listenLessText || 'Наверх')}</span>${CHEVRON}</button>
+</div>
+<script src="${base}assets/js/scroller.js${assetVersion}"></script>`
+    : listenGrid;
+
   const nav = navHtml([
     en.about && { href: `${base}about/${index}`, text: (data.about.title || 'About') },
     en.contact && { href: `${base}contact/${index}`, text: (data.contact.title || 'Contact') },
@@ -216,12 +231,12 @@ ${topline(data)}
 <main class="home">
 <div class="hero">
 ${pictureHtml(photo, base, 'hero__photo', '(min-width: 900px) 700px, (min-width: 460px) 530px, 115vw', true)}
-<h1 class="hero__title">${esc(logo)}${d.signature ? `<img class="hero__sig" src="${base}assets/img/signature.webp" alt="" width="720" height="326" decoding="async">` : ''}</h1>
+<h1 class="hero__title">${esc(logo)}${d.signature ? `<img draggable="false" class="hero__sig" src="${base}assets/img/signature.webp" alt="" width="720" height="326" decoding="async">` : ''}</h1>
 </div>
 <div class="sections">
-${listen.length ? `<section>
+${listen.length ? `<section${listenScroll ? ' class="has-scroller"' : ''}>
 <h2 class="label">${esc(home.listenLabel || 'Listen')}</h2>
-<div class="links links--listen">${listen.map((x) => btn(x)).join('')}</div>
+${listenHtml}
 </section>` : ''}
 ${follow.length ? `<section>
 <h2 class="label">${esc(home.followLabel || 'Follow')}</h2>

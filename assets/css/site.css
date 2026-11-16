@@ -60,6 +60,20 @@ html, body { overflow-x: hidden; }
 a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
 a:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 4px; }
 img, svg { display: block; }
+/* Сайт «статичный»: картинки и значки нельзя зажать, вытащить или сохранить — долгое нажатие
+   на них ничего не открывает, а нажатие по значку в кнопке достаётся самой кнопке. */
+img, svg {
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+}
+/* Долгое нажатие на кнопку или ссылку не поднимает её «карточкой» с предпросмотром. */
+a, button { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+/* Оформление не выделяется; текст биографии и адрес почты выделить и скопировать можно. */
+body { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+.prose, .card__value, .sub__lead { -webkit-user-select: text; user-select: text; }
 h1, h2, p { margin: 0; }
 .arrow { flex: none; }
 
@@ -227,6 +241,69 @@ h1, h2, p { margin: 0; }
 .btn--follow .btn__icon { width: 22px; height: 22px; }
 .btn--follow .btn__text { flex: none; max-width: 100%; }
 .btn--follow .arrow { display: none; }
+
+/* ---------- LISTEN с прокруткой ---------- */
+/* Включается скриптом (класс is-on): без скриптов видны все площадки сразу. */
+.scroller { --row: 50px; --gap: 10px; --peek: 24px; }
+.scroller.is-on .links { grid-auto-rows: var(--row); }
+.scroller.is-on .scroller__view {
+  overflow-y: auto;
+  overscroll-behavior-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  border-radius: 10px;
+}
+.scroller.is-on .scroller__view::-webkit-scrollbar { display: none; }
+.scroller.is-on.rows-1 .scroller__view { max-height: calc(var(--row) * 1 + var(--gap) * 1 + var(--peek)); }
+.scroller.is-on.rows-2 .scroller__view { max-height: calc(var(--row) * 2 + var(--gap) * 2 + var(--peek)); }
+.scroller.is-on.rows-3 .scroller__view { max-height: calc(var(--row) * 3 + var(--gap) * 3 + var(--peek)); }
+.scroller.is-on.rows-4 .scroller__view { max-height: calc(var(--row) * 4 + var(--gap) * 4 + var(--peek)); }
+.scroller.is-on.rows-5 .scroller__view { max-height: calc(var(--row) * 5 + var(--gap) * 5 + var(--peek)); }
+.scroller.is-on.rows-6 .scroller__view { max-height: calc(var(--row) * 6 + var(--gap) * 6 + var(--peek)); }
+/* Край, за которым есть ещё площадки, плавно растворяется. */
+.scroller.is-on:not(.is-end) .scroller__view {
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 30px), transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 30px), transparent 100%);
+}
+.scroller.is-on.is-end:not(.is-top) .scroller__view {
+  -webkit-mask-image: linear-gradient(to top, #000 calc(100% - 30px), transparent 100%);
+  mask-image: linear-gradient(to top, #000 calc(100% - 30px), transparent 100%);
+}
+.scroller__view:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+/* Кнопка стоит в строке заголовка LISTEN справа и не занимает высоты. */
+.has-scroller { position: relative; }
+.scroller__more {
+  position: absolute;
+  top: -13px;
+  right: -6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 0 6px;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  font-size: 8.5px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.scroller__more[hidden] { display: none; }
+.scroller__more:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; border-radius: 6px; }
+.scroller [data-more="up"], .scroller.is-end [data-more="down"] { display: none; }
+.scroller.is-end [data-more="up"] { display: inline; }
+.chev { flex: none; transition: transform 0.2s ease; animation: chev-nudge 1.8s ease-in-out infinite; }
+.scroller.is-end .chev { transform: rotate(180deg); animation: none; }
+@keyframes chev-nudge {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(3px); }
+}
 
 /* ---------- Карточка релиза ---------- */
 .release[data-show="soon"] [data-state="out"],
@@ -445,6 +522,7 @@ h1, h2, p { margin: 0; }
   .hero { flex: none; margin: 0; }
   .sections { flex: 0 1 470px; min-width: 0; gap: 32px; padding: 0; }
   .links { gap: 12px; }
+  .scroller { --gap: 12px; }
   .links--follow.cols-3, .links--follow.cols-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .btn--follow {
     flex-direction: row;
@@ -484,5 +562,5 @@ h1, h2, p { margin: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  * { transition: none !important; }
+  * { transition: none !important; animation: none !important; }
 }
