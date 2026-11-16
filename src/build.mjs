@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { renderHome, renderAbout, renderContact, renderNotFound } from './render.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const root = path.resolve(process.argv[2] || path.join(here, '..', 'site'));
+const root = path.resolve(process.argv[2] || path.join(here, '..'));
 // Для предпросмотра вне хостинга ссылки между страницами ведут прямо на index.html.
 const index = process.env.PREVIEW ? 'index.html' : '';
 const data = JSON.parse(await readFile(path.join(root, 'data', 'site.json'), 'utf8'));
