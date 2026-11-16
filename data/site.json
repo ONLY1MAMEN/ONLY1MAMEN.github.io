@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "site": {
+    "title": "MAMEN",
+    "description": "MAMEN — официальный сайт. Музыка, соцсети и новые релизы.",
+    "lang": "ru",
+    "url": "https://only1mamen.github.io/",
+    "mode": "full",
+    "theme": "grey"
+  },
+  "decor": {
+    "officialSite": "Official site",
+    "cross": true,
+    "coords": "31.808° N   34.664° E",
+    "specks": true,
+    "signature": true
+  },
+  "home": {
+    "logoText": "MAMEN",
+    "photo": {
+      "base": "assets/img/home",
+      "widths": [720, 1040, 1520],
+      "width": 1520,
+      "height": 1377,
+      "fallback": "assets/img/home-1040.jpg",
+      "alt": "MAMEN"
+    },
+    "listenLabel": "Listen",
+    "followLabel": "Follow"
+  },
+  "listen": [
+    { "id": "spotify", "title": "Spotify", "url": "https://open.spotify.com/", "icon": "assets/icons/spotify.svg", "enabled": true },
+    { "id": "yandex", "title": "Яндекс Музыка", "url": "https://music.yandex.ru/", "icon": "assets/icons/yandexmusic.png", "enabled": true },
+    { "id": "vk", "title": "VK Музыка", "url": "https://music.vk.com/", "icon": "assets/icons/vk.svg", "enabled": true },
+    { "id": "ytmusic", "title": "YouTube Music", "url": "https://music.youtube.com/", "icon": "assets/icons/youtubemusic.svg", "enabled": true },
+    { "id": "apple", "title": "Apple Music", "url": "https://music.apple.com/", "icon": "assets/icons/applemusic.svg", "enabled": true },
+    { "id": "soundcloud", "title": "SoundCloud", "url": "https://soundcloud.com/", "icon": "assets/icons/soundcloud.svg", "enabled": true }
+  ],
+  "follow": [
+    { "id": "telegram", "title": "Telegram", "url": "https://t.me/", "icon": "assets/icons/telegram.svg", "enabled": true },
+    { "id": "instagram", "title": "Instagram", "url": "https://www.instagram.com/", "icon": "assets/icons/instagram.svg", "enabled": true },
+    { "id": "youtube", "title": "YouTube", "url": "https://www.youtube.com/", "icon": "assets/icons/youtube.svg", "enabled": true },
+    { "id": "tiktok", "title": "TikTok", "url": "https://www.tiktok.com/", "icon": "assets/icons/tiktok.svg", "enabled": true }
+  ],
+  "release": {
+    "mode": "auto",
+    "title": "Я не знаю",
+    "artist": "MAMEN",
+    "cover": "",
+    "date": "2026-11-20",
+    "time": "00:00",
+    "timezone": "Europe/Moscow",
+    "presaveVk": "https://music.vk.com/",
+    "presaveYandex": "https://music.yandex.ru/",
+    "listenUrl": "https://band.link/",
+    "labelSoon": "Скоро релиз",
+    "labelOut": "Latest release",
+    "kickerSoon": "Скоро",
+    "kickerOut": "Новый релиз",
+    "listenText": "Слушать",
+    "presaveVkText": "Пресейв VK Музыка",
+    "presaveYandexText": "Пресейв Яндекс Музыка",
+    "presaveVkIcon": "assets/icons/vk.svg",
+    "presaveYandexIcon": "assets/icons/yandexmusic.png"
+  },
+  "about": {
+    "enabled": true,
+    "title": "About",
+    "photo": {
+      "base": "assets/img/home",
+      "widths": [720, 1040, 1520],
+      "width": 1520,
+      "height": 1377,
+      "fallback": "assets/img/home-1040.jpg",
+      "alt": "MAMEN"
+    },
+    "bio": "[КОРОТКАЯ БИОГРАФИЯ. Два-три абзаца о MAMEN: откуда, какую музыку делает, что важно знать слушателю.]",
+    "blocks": []
+  },
+  "contact": {
+    "enabled": true,
+    "title": "Contact",
+    "items": [
+      { "label": "Email", "value": "[ВАШ EMAIL]", "url": "" },
+      { "label": "Telegram", "value": "[@ВАШ_TELEGRAM]", "url": "" },
+      { "label": "Instagram", "value": "[@ВАШ_INSTAGRAM]", "url": "" }
+    ]
+  }
+}
