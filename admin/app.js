@@ -24,6 +24,8 @@ const S = {
   section: 'home',
   open: null,           // какая строка списка раскрыта
   history: null,
+  undo: [],             // прежние состояния редактора — для кнопки «Отменить»
+  last: '', lastAt: 0,
 };
 
 // ---------- Мелкие помощники ----------
@@ -121,9 +123,25 @@ async function fetchMissing(d, from) {
 
 const isDirty = () => json(S.data) !== S.savedJson;
 const isUnpublished = () => json(S.data) !== json(S.published);
+// Запоминает предыдущее состояние, чтобы его можно было вернуть. Быстрый набор текста — один шаг.
+function remember() {
+  const now = json(S.data);
+  if (now === S.last) return;
+  if (!S.undo.length || Date.now() - S.lastAt > 1200) { S.undo.push(S.last); if (S.undo.length > 60) S.undo.shift(); }
+  S.last = now; S.lastAt = Date.now();
+}
+function undo() {
+  if (!S.undo.length) return;
+  S.data = JSON.parse(S.undo.pop());
+  S.last = json(S.data); S.lastAt = 0; S.open = null;
+  redraw();
+}
 function touched() {
+  if (S.data) remember();
   const st = document.querySelector('[data-status]');
   if (!st) return;
+  const un = document.querySelector('[data-undo]');
+  if (un) un.disabled = !S.undo.length;
   const dirty = isDirty(), unpub = isUnpublished();
   st.textContent = dirty ? 'Есть несохранённые изменения' : unpub ? 'Черновик сохранён · на сайте пока старая версия' : 'Изменений нет · на сайте эта версия';
   st.classList.toggle('is-dirty', dirty);
@@ -186,6 +204,7 @@ async function loadAll() {
   }
   await fetchMissing(S.data);
   S.history = null;
+  S.undo = []; S.last = json(S.data); S.lastAt = 0;
 }
 
 function logout() {
@@ -203,7 +222,9 @@ function shell() {
     SECTIONS.map(([id, name]) => h('button', { class: 'tab' + (S.section === id ? ' is-on' : ''), type: 'button', role: 'tab', 'data-tab': id, onclick: () => { S.section = id; S.open = null; shell(); window.scrollTo(0, 0); } }, name))));
   const main = h('main', { class: 'wrap' }, h('div', { class: 'sec' }, section()));
   const bar = h('div', { class: 'bar' }, h('div', { class: 'bar__in' },
-    h('div', { class: 'bar__st', 'data-status': '' }),
+    h('div', { class: 'bar__top' },
+      h('button', { class: 'bar__undo', type: 'button', 'data-undo': '', onclick: undo }, '↶ Отменить'),
+      h('div', { class: 'bar__st', 'data-status': '' })),
     h('div', { class: 'row' },
       h('button', { class: 'b b--soft', type: 'button', onclick: () => preview() }, 'Предпросмотр'),
       h('button', { class: 'b', type: 'button', 'data-save': '', onclick: saveDraft }, 'Сохранить черновик'),
@@ -215,6 +236,9 @@ function shell() {
   const on = tabs.querySelector('.is-on');
   if (on && on.scrollIntoView) on.scrollIntoView({ block: 'nearest', inline: 'center' });
   touched();
+  // Нижняя панель не должна закрывать последние поля: под ними всегда остаётся свободное место.
+  main.style.paddingBottom = (bar.offsetHeight + 110) + 'px';
+  document.documentElement.style.scrollPaddingBottom = (bar.offsetHeight + 40) + 'px';
 }
 const redraw = () => { const y = window.scrollY; shell(); window.scrollTo(0, y); };
 
@@ -541,7 +565,8 @@ function secSite() {
       h('button', { class: 'b b--bad', type: 'button', disabled: !isUnpublished(), onclick: () => {
         if (!confirm('Вернуть в редактор версию, которая сейчас на сайте? Неопубликованные изменения пропадут.')) return;
         S.data = clone(S.published); redraw(); toast('В редакторе снова версия с сайта.');
-      } }, 'Сбросить к версии на сайте'),
+      } }, 'Сбросить всё к версии на сайте'),
+      h('p', { class: 'hint' }, 'Одно последнее действие отменяет кнопка «↶ Отменить» внизу (её можно нажимать несколько раз подряд). А эта кнопка убирает сразу все неопубликованные изменения.'),
       !S.priv && h('p', { class: 'warn' }, 'Закрытое хранилище черновиков недоступно этому ключу, поэтому «Сохранить черновик» выключено. Публикация работает.')),
   ];
 }
