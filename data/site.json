@@ -36,42 +36,42 @@
     {
       "id": "spotify",
       "title": "Spotify",
-      "url": "https://open.spotify.com/",
+      "url": "https://open.spotify.com/artist/3djDl5jJq545TnW9FMKtUv",
       "icon": "assets/icons/spotify.svg",
       "enabled": true
     },
     {
       "id": "yandex",
       "title": "Яндекс Музыка",
-      "url": "https://music.yandex.ru/",
+      "url": "https://music.yandex.ru/artist/19301664",
       "icon": "assets/icons/yandexmusic.png",
       "enabled": true
     },
     {
       "id": "vk",
       "title": "VK Музыка",
-      "url": "https://music.vk.com/",
+      "url": "https://vk.ru/artist/7049283594534965491",
       "icon": "assets/icons/vk.svg",
       "enabled": true
     },
     {
       "id": "ytmusic",
       "title": "YouTube Music",
-      "url": "https://music.youtube.com/",
+      "url": "https://music.youtube.com/channel/UCipb3Djlj5ljviYQOf_MTuw",
       "icon": "assets/icons/youtubemusic.svg",
       "enabled": true
     },
     {
       "id": "apple",
       "title": "Apple Music",
-      "url": "https://music.apple.com/",
+      "url": "https://music.apple.com/ru/artist/mamen/1683526399",
       "icon": "assets/icons/applemusic.svg",
       "enabled": true
     },
     {
       "id": "soundcloud",
       "title": "SoundCloud",
-      "url": "https://soundcloud.com/",
+      "url": "https://soundcloud.com/mamen375",
       "icon": "assets/icons/soundcloud.svg",
       "enabled": true
     }
@@ -80,28 +80,28 @@
     {
       "id": "telegram",
       "title": "Telegram",
-      "url": "https://t.me/",
+      "url": "https://t.me/realmamen",
       "icon": "assets/icons/telegram.svg",
       "enabled": true
     },
     {
       "id": "instagram",
       "title": "Instagram",
-      "url": "https://www.instagram.com/",
+      "url": "https://instagram.com/only1mamen",
       "icon": "assets/icons/instagram.svg",
       "enabled": true
     },
     {
       "id": "youtube",
       "title": "YouTube",
-      "url": "https://www.youtube.com/",
+      "url": "https://youtube.com/@mamen_wtf",
       "icon": "assets/icons/youtube.svg",
       "enabled": true
     },
     {
       "id": "tiktok",
       "title": "TikTok",
-      "url": "https://www.tiktok.com/",
+      "url": "https://www.tiktok.com/@mamen.by",
       "icon": "assets/icons/tiktok.svg",
       "enabled": true
     }
