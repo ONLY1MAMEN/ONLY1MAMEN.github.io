@@ -18,16 +18,15 @@
   "home": {
     "logoText": "MAMEN",
     "photo": {
-      "base": "assets/img/home-mwj4ow8uxv",
+      "base": "assets/img/home",
       "widths": [
         720,
         1040,
         1520
       ],
-      "format": "jpg",
       "width": 1520,
       "height": 1377,
-      "fallback": "assets/img/home-mwj4ow8uxv-1040.jpg",
+      "fallback": "assets/img/home-1040.jpg",
       "alt": "MAMEN"
     },
     "listenLabel": "Listen",
