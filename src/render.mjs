@@ -292,14 +292,20 @@ export function renderContact(data, { base = '../', index = '' } = {}) {
   const en = pagesEnabled(data);
   if (!en.contact) return null;
   const title = c.title || 'Contact';
+  // Блок показывается, если у него есть контакт или ссылка.
   const items = (Array.isArray(c.items) ? c.items : [])
-    .filter((x) => x && String(x.value ?? '').trim());
+    .filter((x) => x && (String(x.value ?? '').trim() || safeUrl(x.url)));
   const row = (x) => {
     const href = safeUrl(x.url);
+    const value = String(x.value ?? '').trim();
+    // Без контакта в блоке остаётся только название площадки.
+    const text = value
+      ? `<p class="kicker">${esc(x.label)}</p><p class="card__value">${esc(value)}</p>`
+      : `<p class="card__value">${esc(x.label)}</p>`;
     const button = String(x.button ?? '').trim() || (href.startsWith('mailto:') ? 'Написать' : 'Открыть');
     return `<div class="card">
 ${iconHtml({ icon: x.icon, title: x.label }, base, 'card__icon')}
-<div class="card__text"><p class="kicker">${esc(x.label)}</p><p class="card__value">${esc(x.value)}</p></div>
+<div class="card__text">${text}</div>
 ${href ? `<a class="pill card__action" href="${esc(href)}"${extAttrs(href)} aria-label="${esc(button)}: ${esc(x.label)}">${esc(button)} ${ARROW}</a>` : ''}
 </div>`;
   };

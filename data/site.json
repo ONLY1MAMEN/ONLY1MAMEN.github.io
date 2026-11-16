@@ -152,14 +152,14 @@
     "items": [
       {
         "label": "Telegram",
-        "value": "@only1mamen",
+        "value": "",
         "url": "https://t.me/only1mamen",
         "icon": "assets/icons/telegram.svg",
         "button": "Открыть"
       },
       {
         "label": "Instagram",
-        "value": "@only1mamen",
+        "value": "",
         "url": "https://instagram.com/only1mamen",
         "icon": "assets/icons/instagram.svg",
         "button": "Открыть"
