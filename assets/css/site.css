@@ -434,8 +434,6 @@ h1, h2, p { margin: 0; }
   :root { --u: clamp(1.15px, calc(42vw / 390), 1.55px); }
   .page { max-width: 1200px; }
   .topline { padding-left: 40px; padding-right: 40px; }
-  .topline__part { display: inline; }
-  .topline__part + .topline__part { margin-top: 0; margin-left: 2em; }
   .home {
     flex: 1;
     flex-direction: row;
@@ -476,6 +474,13 @@ h1, h2, p { margin: 0; }
   .sub--contact .sub__body { padding: 24px 40px; }
   .sub__title { font-size: 88px; }
   .page-sub .footer { max-width: 520px; }
+}
+
+/* Координаты в одну строку — только на компьютере с мышью. На любом телефоне и планшете,
+   в том числе повёрнутом набок, они остаются в две строки. */
+@media (min-width: 900px) and (hover: hover) and (pointer: fine) {
+  .topline__part { display: inline; }
+  .topline__part + .topline__part { margin-top: 0; margin-left: 2em; }
 }
 
 @media (prefers-reduced-motion: reduce) {

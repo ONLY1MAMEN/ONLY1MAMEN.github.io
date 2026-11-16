@@ -3,7 +3,8 @@
 import { readFile, writeFile, mkdir, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { renderHome, renderAbout, renderContact, renderNotFound } from './render.mjs';
+import { createHash } from 'node:crypto';
+import { renderHome, renderAbout, renderContact, renderNotFound, setAssetVersion } from './render.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(process.argv[2] || path.join(here, '..'));
@@ -24,6 +25,11 @@ async function page(rel, html) {
 
 // В предпросмотре страница открывается внутри чужой рамки, поэтому строгая политика загрузки снимается.
 const prep = (html) => (html && process.env.PREVIEW ? html.replace(/<meta http-equiv="Content-Security-Policy"[^>]*>\n/, '') : html);
+// Версия = отпечаток содержимого оформления и скриптов: меняется только вместе с ними.
+const hash = createHash('sha1');
+for (const f of ['assets/css/site.css', 'assets/css/noscript.css', 'assets/js/release.js']) hash.update(await readFile(path.join(root, f)));
+setAssetVersion(hash.digest('hex').slice(0, 10));
+
 const out = [];
 await writeFile(path.join(root, 'index.html'), prep(renderHome(data, { base: '', index })));
 out.push('+ index.html');

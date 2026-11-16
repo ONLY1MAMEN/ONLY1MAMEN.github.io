@@ -4,6 +4,11 @@
 
 import { zonedToUtcMs, formatDay } from './tz.mjs';
 
+// Метка версии оформления и скриптов. Она дописывается к адресам site.css и release.js,
+// чтобы после публикации телефон не показывал новую страницу со старым оформлением из кэша.
+let assetVersion = '';
+export function setAssetVersion(v) { assetVersion = v ? `?v=${String(v).replace(/[^A-Za-z0-9]/g, '')}` : ''; }
+
 const ESC = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
 export const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ESC[c]);
 
@@ -91,8 +96,8 @@ ${og ? `<meta property="og:image" content="${esc(og)}">
 <link rel="apple-touch-icon" href="${base}assets/img/apple-touch-icon.png">
 <link rel="preload" href="${base}assets/fonts/anton-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="${base}assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-${preloadHero || ''}<link rel="stylesheet" href="${base}assets/css/site.css">
-<noscript><link rel="stylesheet" href="${base}assets/css/noscript.css"></noscript>
+${preloadHero || ''}<link rel="stylesheet" href="${base}assets/css/site.css${assetVersion}">
+<noscript><link rel="stylesheet" href="${base}assets/css/noscript.css${assetVersion}"></noscript>
 </head>`;
 }
 
@@ -177,7 +182,7 @@ ${listen ? `<a class="pill release__listen" data-state="out" href="${esc(listen)
 ${presave.length ? `<div class="release__presave cols-${presave.length}" data-state="soon">${presave.join('')}</div>` : ''}
 </div>
 </section>
-<script src="${base}assets/js/release.js"></script>`;
+<script src="${base}assets/js/release.js${assetVersion}"></script>`;
 }
 
 // ---------- Главная ----------
