@@ -27,7 +27,7 @@ async function page(rel, html) {
 const prep = (html) => (html && process.env.PREVIEW ? html.replace(/<meta http-equiv="Content-Security-Policy"[^>]*>\n/, '') : html);
 // Версия = отпечаток содержимого оформления и скриптов: меняется только вместе с ними.
 const hash = createHash('sha1');
-for (const f of ['assets/css/site.css', 'assets/css/noscript.css', 'assets/js/release.js', 'assets/js/scroller.js']) hash.update(await readFile(path.join(root, f)));
+for (const f of ['assets/css/site.css', 'assets/css/noscript.css', 'assets/js/release.js']) hash.update(await readFile(path.join(root, f)));
 setAssetVersion(hash.digest('hex').slice(0, 10));
 
 const out = [];

@@ -30,9 +30,7 @@
       "alt": "MAMEN"
     },
     "listenLabel": "Listen",
-    "followLabel": "Follow",
-    "listenLayout": "rows",
-    "listenRows": 3
+    "followLabel": "Follow"
   },
   "listen": [
     {
