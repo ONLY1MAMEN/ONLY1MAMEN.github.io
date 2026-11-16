@@ -19,7 +19,11 @@
     "logoText": "MAMEN",
     "photo": {
       "base": "assets/img/home",
-      "widths": [720, 1040, 1520],
+      "widths": [
+        720,
+        1040,
+        1520
+      ],
       "width": 1520,
       "height": 1377,
       "fallback": "assets/img/home-1040.jpg",
@@ -29,18 +33,78 @@
     "followLabel": "Follow"
   },
   "listen": [
-    { "id": "spotify", "title": "Spotify", "url": "https://open.spotify.com/", "icon": "assets/icons/spotify.svg", "enabled": true },
-    { "id": "yandex", "title": "Яндекс Музыка", "url": "https://music.yandex.ru/", "icon": "assets/icons/yandexmusic.png", "enabled": true },
-    { "id": "vk", "title": "VK Музыка", "url": "https://music.vk.com/", "icon": "assets/icons/vk.svg", "enabled": true },
-    { "id": "ytmusic", "title": "YouTube Music", "url": "https://music.youtube.com/", "icon": "assets/icons/youtubemusic.svg", "enabled": true },
-    { "id": "apple", "title": "Apple Music", "url": "https://music.apple.com/", "icon": "assets/icons/applemusic.svg", "enabled": true },
-    { "id": "soundcloud", "title": "SoundCloud", "url": "https://soundcloud.com/", "icon": "assets/icons/soundcloud.svg", "enabled": true }
+    {
+      "id": "spotify",
+      "title": "Spotify",
+      "url": "https://open.spotify.com/",
+      "icon": "assets/icons/spotify.svg",
+      "enabled": true
+    },
+    {
+      "id": "yandex",
+      "title": "Яндекс Музыка",
+      "url": "https://music.yandex.ru/",
+      "icon": "assets/icons/yandexmusic.png",
+      "enabled": true
+    },
+    {
+      "id": "vk",
+      "title": "VK Музыка",
+      "url": "https://music.vk.com/",
+      "icon": "assets/icons/vk.svg",
+      "enabled": true
+    },
+    {
+      "id": "ytmusic",
+      "title": "YouTube Music",
+      "url": "https://music.youtube.com/",
+      "icon": "assets/icons/youtubemusic.svg",
+      "enabled": true
+    },
+    {
+      "id": "apple",
+      "title": "Apple Music",
+      "url": "https://music.apple.com/",
+      "icon": "assets/icons/applemusic.svg",
+      "enabled": true
+    },
+    {
+      "id": "soundcloud",
+      "title": "SoundCloud",
+      "url": "https://soundcloud.com/",
+      "icon": "assets/icons/soundcloud.svg",
+      "enabled": true
+    }
   ],
   "follow": [
-    { "id": "telegram", "title": "Telegram", "url": "https://t.me/", "icon": "assets/icons/telegram.svg", "enabled": true },
-    { "id": "instagram", "title": "Instagram", "url": "https://www.instagram.com/", "icon": "assets/icons/instagram.svg", "enabled": true },
-    { "id": "youtube", "title": "YouTube", "url": "https://www.youtube.com/", "icon": "assets/icons/youtube.svg", "enabled": true },
-    { "id": "tiktok", "title": "TikTok", "url": "https://www.tiktok.com/", "icon": "assets/icons/tiktok.svg", "enabled": true }
+    {
+      "id": "telegram",
+      "title": "Telegram",
+      "url": "https://t.me/",
+      "icon": "assets/icons/telegram.svg",
+      "enabled": true
+    },
+    {
+      "id": "instagram",
+      "title": "Instagram",
+      "url": "https://www.instagram.com/",
+      "icon": "assets/icons/instagram.svg",
+      "enabled": true
+    },
+    {
+      "id": "youtube",
+      "title": "YouTube",
+      "url": "https://www.youtube.com/",
+      "icon": "assets/icons/youtube.svg",
+      "enabled": true
+    },
+    {
+      "id": "tiktok",
+      "title": "TikTok",
+      "url": "https://www.tiktok.com/",
+      "icon": "assets/icons/tiktok.svg",
+      "enabled": true
+    }
   ],
   "release": {
     "mode": "auto",
@@ -68,22 +132,46 @@
     "title": "About",
     "photo": {
       "base": "assets/img/home",
-      "widths": [720, 1040, 1520],
+      "widths": [
+        720,
+        1040,
+        1520
+      ],
       "width": 1520,
       "height": 1377,
       "fallback": "assets/img/home-1040.jpg",
       "alt": "MAMEN"
     },
-    "bio": "[КОРОТКАЯ БИОГРАФИЯ. Два-три абзаца о MAMEN: откуда, какую музыку делает, что важно знать слушателю.]",
-    "blocks": []
+    "bio": "MAMEN — рэп-исполнитель, родившийся в Минске в **2006** году. Беларусь и Израиль — две точки на карте, между которыми проходит его жизнь.\n\nЕго путь в музыке начался ещё в **2018** году с создания битов.\nВ период с 2020 по 2022 год его биты привлекли внимание **LOVV66** и **163ONMYNECK**, а один из инструменталов едва не оказался у **Моргенштерна** — но это уже совсем другая история.\n\nГрязный юмор, абсурдные тексты и провокации — неотъемлемая часть музыки MAMEN.\nПри этом в его дискографии находится место и для совершенно другого звучания — от меланхоличной лирики до жанровых экспериментов.\n\nЗа свою жизнь MAMEN не раз оказывался в ситуациях, которые могли стать для него последними.\nНо каждый раз жизнь по какой-то необъяснимой причине давала ему ещё один шанс.\n\nСреди его релизов — совместные работы с **sqwiij** и другими артистами.\nА трек **«УРУЧЬЕ»** уже собрал более **100 000** прослушиваний только на SoundCloud.",
+    "blocks": [],
+    "heading": "MAMEN"
   },
   "contact": {
     "enabled": true,
     "title": "Contact",
     "items": [
-      { "label": "Email", "value": "[ВАШ EMAIL]", "url": "" },
-      { "label": "Telegram", "value": "[@ВАШ_TELEGRAM]", "url": "" },
-      { "label": "Instagram", "value": "[@ВАШ_INSTAGRAM]", "url": "" }
-    ]
+      {
+        "label": "Telegram",
+        "value": "@only1mamen",
+        "url": "https://t.me/only1mamen",
+        "icon": "assets/icons/telegram.svg",
+        "button": "Открыть"
+      },
+      {
+        "label": "Instagram",
+        "value": "@only1mamen",
+        "url": "https://instagram.com/only1mamen",
+        "icon": "assets/icons/instagram.svg",
+        "button": "Открыть"
+      },
+      {
+        "label": "Email",
+        "value": "mamencommercial@gmail.com",
+        "url": "mailto:mamencommercial@gmail.com",
+        "icon": "assets/icons/email.svg",
+        "button": "Написать"
+      }
+    ],
+    "subtitle": "По вопросам сотрудничества, выступлений и коммерческих предложений."
   }
 }

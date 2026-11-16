@@ -201,7 +201,7 @@ h1, h2, p { margin: 0; }
 @media (hover: hover) {
   .btn:hover { background: var(--card-hover); border-color: var(--line-strong); }
   .btn--ink:hover { border-color: var(--ink); }
-  .release__listen:hover { background: #000; }
+  .pill:hover { background: #000; }
   .nav__link:hover, .subtop__back:hover { opacity: 0.6; }
   a.contact__row:hover .contact__val { opacity: 0.6; }
 }
@@ -276,7 +276,7 @@ h1, h2, p { margin: 0; }
   text-transform: uppercase;
   overflow-wrap: anywhere;
 }
-.release__listen {
+.pill {
   flex: none;
   display: inline-flex;
   align-items: center;
@@ -351,7 +351,40 @@ h1, h2, p { margin: 0; }
   overflow-wrap: anywhere;
 }
 .prose { color: #2a2a2a; font-size: 15px; line-height: 1.6; overflow-wrap: anywhere; }
-.prose p + p { margin-top: 1em; }
+.prose p + p { margin-top: 1.25em; }
+.prose strong { font-weight: 600; color: var(--ink); }
+.sub--about .prose { max-width: 34em; }
+.sub__lead { max-width: 30em; color: #2a2a2a; font-size: 15px; line-height: 1.55; overflow-wrap: break-word; }
+
+/* Блоки контактов: та же рамка и фон, что у кнопок и карточки релиза на главной. */
+.cards { display: flex; flex-direction: column; gap: 10px; }
+.card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 14px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+}
+.card__icon { flex: none; width: 26px; height: 26px; object-fit: contain; }
+.card__icon--mono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+}
+.card__text { flex: 1 1 150px; min-width: 0; display: flex; flex-direction: column; gap: 7px; }
+.card__value { font-size: 15px; font-weight: 600; line-height: 1.25; overflow-wrap: anywhere; }
+.card__action { flex: 1 1 100%; min-height: 46px; }
+@media (min-width: 480px) {
+  .card__action { flex: none; min-width: 132px; }
+}
 .block { padding-top: 22px; border-top: 1px solid var(--line); }
 .block .label { margin-bottom: 10px; }
 .contact { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
@@ -431,7 +464,9 @@ h1, h2, p { margin: 0; }
   .sub--about { flex-direction: row; align-items: center; gap: 56px; padding: 24px 40px; }
   .sub--about .sub__photo { flex: 0 0 46%; height: calc(var(--u) * 360); }
   .sub--about .sub__photo .hero__photo { left: 0; width: 100%; height: 100%; }
-  .sub--about .sub__body { flex: 1; min-width: 0; padding: 0; }
+  .sub--about { align-items: flex-start; }
+  .sub--about .sub__photo { position: sticky; top: 24px; }
+  .sub--about .sub__body { flex: 1; min-width: 0; padding: 24px 0 0; }
   .sub--contact { width: 100%; max-width: 640px; margin: 0 auto; }
   .sub--contact .sub__body { padding: 24px 40px; }
   .sub__title { font-size: 88px; }
