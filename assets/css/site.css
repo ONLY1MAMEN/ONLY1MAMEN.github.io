@@ -504,3 +504,18 @@ h1, h2, p { margin: 0; }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }
 }
+
+/* FOLLOW из 5 кнопок: телефон — пять в ряд, компьютер — три сверху и две снизу */
+.links--follow.cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.links--follow.cols-5 .btn--follow { padding: 8px 2px; letter-spacing: 0.03em; font-size: 8px; }
+@media (min-width: 900px) {
+  .links--follow.cols-5 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .links--follow.cols-5 > * { grid-column: span 2; }
+  .links--follow.cols-5 > :nth-child(n+4) { grid-column: span 3; }
+  .links--follow.cols-5 .btn--follow { padding: 6px 10px; gap: 8px; letter-spacing: 0.05em; font-size: 10px; }
+  .links--follow.cols-5 .btn__text { white-space: nowrap; }
+}
+@media (max-width: 359px) {
+  .links--follow.cols-5 { gap: 6px; }
+  .links--follow.cols-5 .btn--follow { font-size: 7px; letter-spacing: 0; }
+}

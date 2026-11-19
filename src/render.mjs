@@ -253,7 +253,7 @@ ${listen.length ? `<section>
 </section>` : ''}
 ${follow.length ? `<section>
 <h2 class="label">${esc(home.followLabel || 'Follow')}</h2>
-<div class="links links--follow cols-${Math.min(follow.length, 4)}">${follow.map((x) => btn(x, ' btn--follow')).join('')}</div>
+<div class="links links--follow cols-${Math.min(follow.length, 5)}">${follow.map((x) => btn(x, ' btn--follow')).join('')}</div>
 </section>` : ''}
 ${releaseHtml(data, base, nowMs)}
 </div>

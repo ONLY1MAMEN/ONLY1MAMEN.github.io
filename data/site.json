@@ -118,6 +118,13 @@
       "url": "https://www.tiktok.com/@mamen.by",
       "icon": "assets/icons/tiktok.svg",
       "enabled": true
+    },
+    {
+      "id": "vkpage",
+      "title": "VK",
+      "url": "https://vk.ru/mamen_wtf",
+      "icon": "assets/icons/vk.svg",
+      "enabled": true
     }
   ],
   "release": {
