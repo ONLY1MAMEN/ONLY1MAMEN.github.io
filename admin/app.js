@@ -199,7 +199,14 @@ async function loadAll() {
   if (S.priv && S.priv.files.has('site.json')) {
     try {
       const draft = normalize(JSON.parse(await S.gh.text(PRIV, 'site.json', S.priv.head)));
-      S.data = draft; S.savedJson = json(draft);
+      // Черновик сохранён до последнего обновления сайта (например, сайт меняли не через админку)?
+      // Тогда по умолчанию берём сайт: иначе публикация черновика молча затрёт новые изменения.
+      let base = '';
+      if (S.priv.files.has('base.txt')) { try { base = String(await S.gh.text(PRIV, 'base.txt', S.priv.head)).trim(); } catch { /* нет — значит старый черновик */ } }
+      const stale = base !== S.pub.head && json(draft) !== json(S.published);
+      if (!stale || !confirm('Сайт обновлялся после того, как был сохранён черновик.\n\nOK — открыть актуальную версию сайта (рекомендуется).\nОтмена — открыть старый черновик: при его публикации новые изменения сайта пропадут.')) {
+        S.data = draft; S.savedJson = json(draft);
+      }
     } catch { /* повреждённый черновик не мешает работе: берём опубликованную версию */ }
   }
   await fetchMissing(S.data);
@@ -706,7 +713,7 @@ async function saveDraft(silent) {
         await S.gh.initFile(PRIV, 'site.json', text, 'Черновик сайта');
         S.priv = await S.gh.snapshot(PRIV, CONFIG.branch);
       }
-      const entries = [{ path: 'site.json', text }];
+      const entries = [{ path: 'site.json', text }, { path: 'base.txt', text: S.pub.head + '\n' }];
       for (const p of refs(S.data)) if (S.blobs.has(p) && !S.priv.files.has(p)) entries.push({ path: p, blob: S.blobs.get(p) });
       await S.gh.commit(PRIV, CONFIG.branch, S.priv, entries, 'Черновик сайта');
       S.priv = await S.gh.snapshot(PRIV, CONFIG.branch);
