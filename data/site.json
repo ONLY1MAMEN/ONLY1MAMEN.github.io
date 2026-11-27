@@ -128,7 +128,7 @@
     }
   ],
   "release": {
-    "mode": "out",
+    "mode": "auto",
     "title": "ИСТУКАН",
     "artist": "MAMEN",
     "cover": "assets/img/cover-mwn2psoblc.jpg",
